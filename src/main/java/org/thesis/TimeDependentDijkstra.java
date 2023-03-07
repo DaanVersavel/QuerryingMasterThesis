@@ -4,27 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Dijkstra {
+public class TimeDependentDijkstra {
 
     private Graph graph;
 
-    public Dijkstra(Graph graph) {
-       this.graph=graph;
+    public TimeDependentDijkstra(Graph graph){
+        this.graph = graph;
     }
 
-    //return map of shortest time to land marks
-    public double solveDijkstra(long startNode, long endNodeId){
+
+    public double solveDijkstraTimeDependant(long startNode, long endNodeId,double startTime){
         PriorityQueue<NodeParser> pq = new PriorityQueue<>(new NodeComparator());
+        //Offset from starting time reason why the value for startnode is 0
         Map<Long,Double> shortestTimeMap = new HashMap<>();
+
         Map<Long,NodeParser> nodeMap = new HashMap<>();
 
         for(NodeParser node : graph.getNodesMap().values()){
             shortestTimeMap.put(node.getOsmId(),Double.MAX_VALUE);
-            nodeMap.put(node.getOsmId(),new NodeParser(node));         //Copy of node
+            nodeMap.put(node.getOsmId(),new NodeParser(node));//Copy of node
             nodeMap.get(node.getOsmId()).setCurrenCost(Double.MAX_VALUE);
         }
         pq.addAll(nodeMap.values());
-
 
         shortestTimeMap.put(startNode,0.0);
         NodeParser tempNode = nodeMap.get(startNode);
@@ -34,24 +35,24 @@ public class Dijkstra {
 
 
         //dijkstra algorithm
-        for (int i = 1; i <= nodeMap.size(); i++) {
+        for (int i = 1; i <= shortestTimeMap.size(); i++) {
             //shortest time search
             NodeParser removedNode= pq.remove();
-
             if(shortestTimeMap.get(removedNode.getOsmId())==Double.MAX_VALUE){
-                System.out.println("Node met current cost max");
-                //break;
+                System.out.println("ERROR Double met Max Value");
+                break;
             }
 
             //update the adjacent node-time
+            double currenTimeAtNode=startTime+shortestTimeMap.get(removedNode.getOsmId());
             for(EdgeParser edge: removedNode.getOutgoingEdges()){
                 //when reaching the node
-                double travelTimeAtNode = shortestTimeMap.get(edge.getBeginNodeOsmId())+ edge.getDefaultTravelTime();
+                double travelTimeToNextEdge = shortestTimeMap.get(edge.getBeginNodeOsmId()) +edge.getTravelTime(currenTimeAtNode,graph.getSpeedMatrixMap());
                 //If better time update time and readd to pq
-                if(travelTimeAtNode<shortestTimeMap.get(edge.getEndNodeOsmId())){
-                    shortestTimeMap.put(edge.getEndNodeOsmId(),travelTimeAtNode);
+                if(currenTimeAtNode+travelTimeToNextEdge<shortestTimeMap.get(edge.getEndNodeOsmId())){
+                    shortestTimeMap.put(edge.getEndNodeOsmId(),travelTimeToNextEdge);
                     NodeParser tempnode=nodeMap.get(edge.getEndNodeOsmId());
-                    tempnode.setCurrenCost(travelTimeAtNode);
+                    tempnode.setCurrenCost(travelTimeToNextEdge);
                     if(pq.remove(tempnode)){
                         pq.add(tempnode);
                     }
@@ -59,13 +60,6 @@ public class Dijkstra {
             }
         }
 
-
         return shortestTimeMap.get(endNodeId);
     }
-
-
-
-
-
-
 }

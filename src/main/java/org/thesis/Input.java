@@ -6,7 +6,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 
 public class Input {
-    private  Graph graph = new Graph();
+    private final Graph graph = new Graph();
 
     public Input(String filePath){
         JSONParser parser = new JSONParser();
@@ -39,6 +38,7 @@ public class Input {
                         JSONObject edgeJson = (JSONObject) edgeObj;
                         EdgeParser edge = new EdgeParser((long) edgeJson.get("beginNodeOsmId"), (long) edgeJson.get("endNodeOsmId"), (double) edgeJson.get("defaultTravelTime"));
                         edge.setEdgeType((String) edgeJson.get("edgeType"));
+                        edge.setLength((double) edgeJson.get("length"));
                         // set any other attributes for the edge
                         edges.add(edge);
                     }
@@ -57,16 +57,13 @@ public class Input {
                     JSONObject factorMapobj = (JSONObject) factormapJson.get(objkey);
                     Map<Long,Double> factorEntry = new HashMap<>();
                     for(Object objkey2  : factorMapobj.keySet()){
-
-                        factorEntry.put((Long) Long.valueOf(objkey2.toString()) , (Double) factorMapobj.get(objkey2));
+                        factorEntry.put(Long.valueOf(objkey2.toString()), (Double) factorMapobj.get(objkey2));
                     }
-                    cell.addFactorMap((Double) Double.valueOf(objkey.toString()) ,factorEntry);
+                    cell.addFactorMap(Double.parseDouble(objkey.toString()),factorEntry);
                 }
                 this.graph.addToCellMap(cell);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
 

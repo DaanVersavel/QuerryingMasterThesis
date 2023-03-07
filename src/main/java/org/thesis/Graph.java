@@ -14,15 +14,9 @@ public class Graph {
     public Graph() {
         this.nodesMap= new HashMap<>();
         this.cellMap = new HashMap<>();
-    }
-
-    private void addDefaultTravelTime() {
-        for(NodeParser nodeParser:nodesMap.values()){
-            for(EdgeParser edgeParser:nodeParser.getOutgoingEdges()){
-                Double[][] speedMatrix = speedMatrixMap.get(edgeParser.getEdgeType());
-                edgeParser.setDefaultTravelTime(edgeParser.getLength()/speedMatrix[0][2]);
-            }
-        }
+        //only used for the comparing between real value and estimation
+        this.speedMatrixMap = new HashMap<>();
+        makeSpeedMatrixs();
     }
 
     public Map<Long, NodeParser> getNodesMap() {
@@ -134,5 +128,23 @@ public class Graph {
 
     public void addToCellMap(Cell cell) {
         this.cellMap.put(cell.getCellId(), cell);
+    }
+
+    public double doEstimation(long startNodeId, long endNodeId, double startTime) {
+        //calculate traveltime using normal Dijstra
+        Dijkstra dijkstra = new Dijkstra(this);
+        double traveltime = dijkstra.solveDijkstra(startNodeId, endNodeId);
+        double factor = getFactor(startNodeId, endNodeId,startTime);
+
+        return factor * traveltime;
+    }
+
+    public double getFactor(long startNodeId, long endNodeId,double startTime) {
+        NodeParser beginNode= this.nodesMap.get(startNodeId);
+        NodeParser endNode= this.nodesMap.get(endNodeId);
+        Cell beginCell = this.cellMap.get(beginNode.getCellID());
+
+        //factormap Time==> TargetCell
+        return beginCell.getFactorMap().get(startTime).get(endNode.getCellID());
     }
 }

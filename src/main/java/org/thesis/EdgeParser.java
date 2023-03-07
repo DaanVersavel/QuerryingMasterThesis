@@ -21,6 +21,7 @@ public class EdgeParser {
 		this.endNodeOsmId = edge.getEndNodeOsmId();
 		this.length = edge.getLength();
 		this.edgeType = edge.getEdgeType();
+		this.defaultTravelTime = edge.getDefaultTravelTime();
 	}
 
 	//nodeArrivelTime= time when we reach Begin node of edge
@@ -67,7 +68,7 @@ public class EdgeParser {
 				time = speedMatrix[row][0];
 				speed = speedMatrix[row][2];
 				expectedArrivalTime = time + (distanceToGo/speed);
-			}
+		}
 
 		travelTime = expectedArrivalTime-nodeArrivalTime;
 		return travelTime;
