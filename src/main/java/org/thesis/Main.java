@@ -2,9 +2,16 @@ package org.thesis;
 
 public class Main {
     public static void main(String[] args) {
-        String filePath = "src/main/java/org/thesis/Input/Aalst.json";
-        Input input = new Input(filePath);
+        String filePathGraph = "src/main/java/org/thesis/Input/Aalst.json";
+        String filePathQuerries = "src/main/java/org/thesis/Input/Aalst.json";
+        Input input = new Input();
+        input.inputGraph(filePathGraph);
+        input.inputQuerrys(filePathQuerries);
         Graph graph = input.getGraph();
+
+
+
+
 
         long startNodeId = 9240416902L; //From Cel 0
         long endNodeId = 861543291L; //from cell 7
