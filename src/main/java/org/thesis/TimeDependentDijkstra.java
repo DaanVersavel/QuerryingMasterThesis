@@ -48,7 +48,7 @@ public class TimeDependentDijkstra {
             for(EdgeParser edge: removedNode.getOutgoingEdges()){
                 //when reaching the node
                 double travelTimeToNextEdge = shortestTimeMap.get(edge.getBeginNodeOsmId()) +edge.getTravelTime(currenTimeAtNode,graph.getSpeedMatrixMap());
-                //If better time update time and readd to pq
+                //If better time update time and read to pq
                 if(currenTimeAtNode+travelTimeToNextEdge<shortestTimeMap.get(edge.getEndNodeOsmId())){
                     shortestTimeMap.put(edge.getEndNodeOsmId(),travelTimeToNextEdge);
                     NodeParser tempnode=nodeMap.get(edge.getEndNodeOsmId());

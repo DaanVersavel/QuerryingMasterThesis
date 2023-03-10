@@ -87,10 +87,10 @@ public class Input {
     public void inputQuerrys(String filePathQuerries) {
         JSONParser parser = new JSONParser();
         try (BufferedReader br = new BufferedReader(new FileReader(filePathQuerries))) {
-            JSONObject querryjson = (JSONObject) parser.parse(br);
-            for (Object key : querryjson.keySet()) {
-                long id = Long.parseLong((String) key);
-                JSONObject querryJson = (JSONObject) querryjson.get(key);
+            JSONArray jsonArray = (JSONArray) parser.parse(br);
+
+            for (Object obj : jsonArray) {
+                JSONObject querryJson = (JSONObject) obj;
                 Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"),(double)querryJson.get("startTime"));
                 querryList.add(querry);
             }
