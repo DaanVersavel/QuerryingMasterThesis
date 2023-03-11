@@ -40,9 +40,6 @@ public class Main {
         System.out.println("Done");
 
 
-
-
-
 //        long startNodeId = 9240416902L; //From Cel 0
 //        long endNodeId = 861543291L; //from cell 7
 //        double startTime = 7*3600;
@@ -54,10 +51,6 @@ public class Main {
 //
 //        double factor = graph.getFactor(startNodeId, endNodeId, startTime);
 //        double difference = timeDependantTime - estimation;
-
-
-
-
 
 
 //
