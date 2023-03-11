@@ -57,7 +57,9 @@ public class Dijkstra {
                     }
                 }
             }
+            if(shortestTimeMap.get(endNodeId)!=Double.MAX_VALUE)break;
         }
+
 
 
         return shortestTimeMap.get(endNodeId);
