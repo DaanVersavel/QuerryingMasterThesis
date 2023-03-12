@@ -5,19 +5,20 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-//        String filePathGraph = args[0];
-//        String filePathQuerries = args[1];
-//        String outputFilePath = args[2];
+        String filePathGraph = args[0];
+        String filePathQuerries = args[1];
+        //String outputFilePath = args[2];
 
-        String filePathGraph = "src/main/java/org/thesis/Input/Aalst-preprocessing-9.json";
-        String filePathQuerries = "src/main/java/org/thesis/Input/Aalst-Querrys.json";
-        String outputFilePath = "Aalst";
+//        String filePathGraph = "src/main/java/org/thesis/Input/Gent-preprocessing-9.json";
+//        String filePathQuerries = "src/main/java/org/thesis/Input/Gent-Querrys.json";
+//        String outputFilePath = "Gent";
 
         Input input = new Input();
         input.inputGraph(filePathGraph);
         input.inputQuerrys(filePathQuerries);
         Graph graph = input.getGraph();
         List<Querry> querryList = input.getQuerryList();
+        String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
 
 
         for(int i = 0; i < querryList.size(); i++){
