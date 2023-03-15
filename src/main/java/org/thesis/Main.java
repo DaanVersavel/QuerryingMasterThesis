@@ -8,10 +8,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String filePathGraph = args[0];
         String filePathQuerries = args[1];
-        //String outputFilePath = args[2];
         int numberOfThreads = Integer.parseInt(args[3]);
 
 //        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/9-cell/Aalst-preprocessing-9.json";
@@ -76,11 +75,6 @@ public class Main {
         output2.writeToFile(outputFilePath);
         System.out.println("Done");
 
-
-//        long startNodeId = 9240416902L; //From Cel 0
-//        long endNodeId = 861543291L; //from cell 7
-//        double startTime = 7*3600;
-//
 //        double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
 //
 //        TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
