@@ -2,15 +2,14 @@ package org.thesis;
 
 public class Querry {
     private final long startId;
-    private long endId;
+    private final long endId;
     private double startTime;
     private double estimatedTravelTime;
     private double timeDependantTravelTime;
 
-    public Querry(long startId, long endId, double startTime) {
+    public Querry(long startId, long endId) {
         this.startId = startId;
         this.endId = endId;
-        this.startTime = startTime;
     }
 
     public void setEstimatedTravelTime(double estimatedTravelTime) {
@@ -35,6 +34,10 @@ public class Querry {
 
     public double getEstimatedTravelTime() {
         return estimatedTravelTime;
+    }
+
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
     }
 
     public double getTimeDependantTravelTime() {

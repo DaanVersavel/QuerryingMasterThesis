@@ -91,7 +91,7 @@ public class Input {
 
             for (Object obj : jsonArray) {
                 JSONObject querryJson = (JSONObject) obj;
-                Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"),(double)querryJson.get("startTime"));
+                Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"));
                 querryList.add(querry);
             }
 

@@ -40,7 +40,7 @@ public class Dijkstra {
 
             if(shortestTimeMap.get(removedNode.getOsmId())==Double.MAX_VALUE){
                 System.out.println("Node met current cost max Dijkstra");
-                //break;
+                break;
             }
 
             //update the adjacent node-time
