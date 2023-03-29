@@ -53,12 +53,15 @@ public class Input {
                 }
                 cell.addNodeList(nodeList);
                 this.graph.addListToNodeMap(nodeList);
-                long landmarkid = (long) celljson.get("LandmarkId");
+//                long landmarkid = (long) celljson.get("LandmarkID");
+                JSONObject node = (JSONObject) celljson.get("landmark");
+                long landmarkid = (long) node.get("osmId");
+
 
                 cell.setLandmark(cell.getCellNodesMap().get(landmarkid));
 
                 //add factormap
-                Map factormapJson = (Map) celljson.get("FactorMap");
+                Map factormapJson = (Map) celljson.get("factorMap");
                 for (Object objkey : factormapJson.keySet()) {
                     JSONObject factorMapobj = (JSONObject) factormapJson.get(objkey);
                     Map<Long, Double> factorEntry = new HashMap<>();

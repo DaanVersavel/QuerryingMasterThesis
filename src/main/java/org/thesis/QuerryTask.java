@@ -15,8 +15,9 @@ public class QuerryTask implements Runnable {
     }
     @Override
     public void run() {
+        System.out.println("Start with query of time "+startTime);
         for(int i = 0; i < queryList.size(); i++){
-            if(i%100 ==0) System.out.println(i);
+            //if(i%200 ==0) System.out.println(i);
             Querry querry = queryList.get(i);
             long startNodeId = querry.getStartId();
             long endNodeId = querry.getEndId();

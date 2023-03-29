@@ -58,7 +58,7 @@ public class TimeDependentDijkstra {
                     }
                 }
             }
-            if(shortestTimeMap.get(endNodeId)!=Double.MAX_VALUE)break;
+            if(removedNode.getOsmId()==endNodeId)break;
         }
 
         return shortestTimeMap.get(endNodeId);

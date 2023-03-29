@@ -1,6 +1,5 @@
 package org.thesis;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -13,12 +12,13 @@ public class Main {
         String filePathQuerries = args[1];
         int numberOfThreads = Integer.parseInt(args[3]);
 
-//        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/9-cell/Aalst-preprocessing-9.json";
-//        String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-QuerrysV2.json";
-//        String outputFilePath = "AalstV2";
+//        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
+//        String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-Querrys.json";
+//        String outputFilePath = "test-64";
+//        int numberOfThreads =9;
 
         List<Double> times = new ArrayList<>();
-        for(int i= 4; i<args.length; i++){
+                for(int i= 4; i<args.length; i++){
             times.add(Double.parseDouble(args[i]));
         }
 
@@ -118,4 +118,5 @@ public class Main {
         times.add(22*3600.0);
         return times;
     }
+    //0 14400 25200 28800 32400 43200 46800 57600 61200 64800 68400 75600 79200
 }

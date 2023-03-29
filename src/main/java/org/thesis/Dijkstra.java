@@ -57,7 +57,7 @@ public class Dijkstra {
                     }
                 }
             }
-            if(shortestTimeMap.get(endNodeId)!=Double.MAX_VALUE)break;
+            if(removedNode.getOsmId()==endNodeId)break;
         }
 
 
