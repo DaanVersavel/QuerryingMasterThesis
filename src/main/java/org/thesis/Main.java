@@ -8,19 +8,20 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        String filePathGraph = args[0];
-        String filePathQuerries = args[1];
-        int numberOfThreads = Integer.parseInt(args[3]);
+//        String filePathGraph = args[0];
+//        String filePathQuerries = args[1];
+//        int numberOfThreads = Integer.parseInt(args[3]);
 
-//        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
-//        String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-Querrys.json";
-//        String outputFilePath = "test-64";
-//        int numberOfThreads =9;
+        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
+        String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-Querrys.json";
+        String outputFilePath = "test-64";
+        int numberOfThreads =9;
 
-        List<Double> times = new ArrayList<>();
-                for(int i= 4; i<args.length; i++){
-            times.add(Double.parseDouble(args[i]));
-        }
+//        List<Double> times = new ArrayList<>();
+//                for(int i= 4; i<args.length; i++){
+//            times.add(Double.parseDouble(args[i]));
+//        }
+
 
         Input input = new Input();
         input.inputGraph(filePathGraph);
@@ -29,7 +30,7 @@ public class Main {
         List<Querry> querryList = input.getQuerryList();
 
 
-        String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
+        //String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
 
 
 //        for(int i = 0; i < querryList.size(); i++){
@@ -50,7 +51,8 @@ public class Main {
 //        }
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        //List<Double> times = getTimes();
+        //TODO
+        List<Double> times = getTimes();
 
         for(double startTime : times){
             executor.execute(new QuerryTask(copyQuerrylist(querryList),startTime,graph));

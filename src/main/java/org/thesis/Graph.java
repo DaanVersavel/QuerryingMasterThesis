@@ -1,8 +1,6 @@
 package org.thesis;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Graph {
 
@@ -91,11 +89,58 @@ public class Graph {
         //calculate traveltime using normal Dijstra
         Dijkstra dijkstra = new Dijkstra(this);
         double traveltime = dijkstra.solveDijkstra(startNodeId, endNodeId);
-        double factor = getFactor(startNodeId, endNodeId,startTime);
+        dijkstra.calculatePath(startNodeId,endNodeId);
+        List<NodeParser> path =dijkstra.getPath();
+        Set<Long> passingCellsSet = dijkstra.getPassingCellSet();
 
-        return factor * traveltime;
+        double returnTime=0;
+        if(passingCellsSet.size()>3){
+            List<Long> list = new ArrayList<>(passingCellsSet);
+            long numberofSplits=(passingCellsSet.size()-1L);
+            for(int i=0;i<numberofSplits;i++){
+                double partPathTime=0;
+                long beginCell=list.get(i);
+                long endCell=list.get(i+1);
+                //find node to start path from
+                int indexBegin=0;
+                long currentCell=path.get(0).getCellID();
+                while(currentCell!=beginCell){
+                    indexBegin++;
+                    currentCell=path.get(indexBegin).getCellID();
+                }
+                int indexEnd=indexBegin;
+                currentCell=path.get(0).getCellID();
+                while(currentCell!=endCell){
+                    indexEnd++;
+                    currentCell=path.get(indexEnd).getCellID();
+                }
+
+                long partBeginNodeId=path.get(indexBegin).getOsmId();
+                long partEndNodeId=path.get(indexEnd).getOsmId();
+                double partTravelTime=dijkstra.getShortestTimeMap().get(partEndNodeId)-dijkstra.getShortestTimeMap().get(partBeginNodeId);
+
+
+                double factor=getFactor(partBeginNodeId, partEndNodeId,startTime);
+
+                partPathTime= factor*partTravelTime;
+                returnTime+=partPathTime;
+            }
+
+        }else {
+            double factor = getFactor(startNodeId, endNodeId,startTime);
+            returnTime = factor*traveltime;
+        }
+
+        return returnTime;
     }
 
+    /**
+     *
+     * @param startNodeId of the begin cell
+     * @param endNodeId of the end cell
+     * @param startTime of Querry
+     * @return double value of factor from start cell to end cell
+     */
     public double getFactor(long startNodeId, long endNodeId,double startTime) {
         NodeParser beginNode= this.nodesMap.get(startNodeId);
         NodeParser endNode= this.nodesMap.get(endNodeId);

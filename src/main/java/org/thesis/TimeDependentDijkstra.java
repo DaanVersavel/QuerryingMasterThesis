@@ -1,12 +1,11 @@
 package org.thesis;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class TimeDependentDijkstra {
 
     private Graph graph;
+    private Map<Long,Double> shortestTimeMap;
 
     public TimeDependentDijkstra(Graph graph){
         this.graph = graph;
@@ -16,9 +15,8 @@ public class TimeDependentDijkstra {
     public double solveDijkstraTimeDependant(long startNode, long endNodeId,double startTime){
         PriorityQueue<NodeParser> pq = new PriorityQueue<>(new NodeComparator());
         //Offset from starting time reason why the value for startnode is 0
-        Map<Long,Double> shortestTimeMap = new HashMap<>();
-
         Map<Long,NodeParser> nodeMap = new HashMap<>();
+        shortestTimeMap = new HashMap<>();
 
         for(NodeParser node : graph.getNodesMap().values()){
             shortestTimeMap.put(node.getOsmId(),Double.MAX_VALUE);
