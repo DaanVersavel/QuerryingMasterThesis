@@ -51,7 +51,6 @@ public class Main {
 //        }
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        //TODO
         List<Double> times = getTimes();
 
         for(double startTime : times){

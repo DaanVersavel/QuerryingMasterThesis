@@ -67,8 +67,6 @@ public class Dijkstra {
             if(removedNode.getOsmId()==endNodeId)break;
         }
 
-
-
         return shortestTimeMap.get(endNodeId);
     }
     public void calculatePath(long begin, long end){

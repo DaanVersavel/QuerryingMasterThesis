@@ -133,6 +133,14 @@ public class Graph {
 
         return returnTime;
     }
+    public double doNormalEstimation(long startNodeId, long endNodeId, double startTime) {
+        //calculate traveltime using normal Dijstra
+        Dijkstra dijkstra = new Dijkstra(this);
+        double traveltime = dijkstra.solveDijkstra(startNodeId, endNodeId);
+        dijkstra.calculatePath(startNodeId,endNodeId);
+        double factor = getFactor(startNodeId, endNodeId,startTime);
+        return factor*traveltime;
+    }
 
     /**
      *

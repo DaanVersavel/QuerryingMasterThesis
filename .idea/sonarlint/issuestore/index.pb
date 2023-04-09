@@ -22,3 +22,9 @@ U
 Aalst-64.json,9\f\9f5e504b6c9e61f7906581237315d9e8617c5f9a
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+X
+(src/main/java/org/thesis/EdgeParser.java,e\b\ebe2677ef8a4c90760d076d8d1005e1e5747b2fc
+X
+(src/main/java/org/thesis/NodeParser.java,2\8\28da8350e5522f4379e4b010a56ee8f42a34b64c
+S
+#src/main/java/org/thesis/Input.java,2\6\26230b6dc06ee024d77cb179d5ff4d359d6f5e00

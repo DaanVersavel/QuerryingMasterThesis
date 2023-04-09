@@ -23,7 +23,7 @@ public class QuerryTask implements Runnable {
             long endNodeId = querry.getEndId();
             querry.setStartTime(startTime);
 
-            double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
+            double estimation = graph.doNormalEstimation(startNodeId, endNodeId, startTime);
             querry.setEstimatedTravelTime(estimation);
 
             TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
