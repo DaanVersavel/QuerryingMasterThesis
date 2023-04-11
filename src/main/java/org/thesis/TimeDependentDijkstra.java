@@ -17,7 +17,6 @@ public class TimeDependentDijkstra {
         PriorityQueue<NodeParser> pq = new PriorityQueue<>(new NodeComparator());
         //Offset from starting time reason why the value for startnode is 0
         Map<Long,Double> shortestTimeMap = new HashMap<>();
-
         Map<Long,NodeParser> nodeMap = new HashMap<>();
 
         for(NodeParser node : graph.getNodesMap().values()){
@@ -49,7 +48,7 @@ public class TimeDependentDijkstra {
                 //when reaching the node
                 double travelTimeToNextEdge = shortestTimeMap.get(edge.getBeginNodeOsmId()) +edge.getTravelTime(currenTimeAtNode,graph.getSpeedMatrixMap());
                 //If better time update time and read to pq
-                if(currenTimeAtNode+travelTimeToNextEdge<shortestTimeMap.get(edge.getEndNodeOsmId())){
+                if(travelTimeToNextEdge<shortestTimeMap.get(edge.getEndNodeOsmId())){
                     shortestTimeMap.put(edge.getEndNodeOsmId(),travelTimeToNextEdge);
                     NodeParser tempnode=nodeMap.get(edge.getEndNodeOsmId());
                     tempnode.setCurrenCost(travelTimeToNextEdge);

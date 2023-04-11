@@ -14,10 +14,6 @@ Q.idea/sonarlint/securityhotspotstore/d/f/df523867818d36e609a4c66a54ec3150c30444
 -.idea/artifacts/QuerryingMasterThesis_jar.xml,c\a\ca8c6b713b28e1785876c6e25e981716829d3063
 \
 ,src/main/java/org/thesis/NodeComparator.java,8\9\89c73468dfe65486c6766581984f297c13078b84
-T
-$src/main/java/org/thesis/Querry.java,f\c\fc9a959ed82d784b44a3b837a90fd38a3fa94e46
-U
-%src/main/java/org/thesis/Output2.java,a\1\a11600701b3866eaa4fd339fb1c9452a83699c48
 =
 Aalst-64.json,9\f\9f5e504b6c9e61f7906581237315d9e8617c5f9a
 7

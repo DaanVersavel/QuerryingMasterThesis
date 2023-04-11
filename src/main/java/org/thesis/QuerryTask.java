@@ -6,30 +6,37 @@ public class QuerryTask implements Runnable {
 
     private List<Querry> queryList;
     private final double startTime;
+    private boolean enable;
     private Graph graph;
 
-    public QuerryTask(List<Querry> querryList,double startTime, Graph graph) {
+    public QuerryTask(List<Querry> querryList, Graph graph, double startTime, boolean enable) {
         this.queryList = querryList;
         this.startTime = startTime;
         this.graph = graph;
+        this.enable = enable;
     }
+
     @Override
     public void run() {
         System.out.println("Start with query of time "+startTime);
         for(int i = 0; i < queryList.size(); i++){
-            //if(i%200 ==0) System.out.println(i);
             Querry querry = queryList.get(i);
             long startNodeId = querry.getStartId();
             long endNodeId = querry.getEndId();
-            querry.setStartTime(startTime);
+            //double dijkstratravelTime = querry.getDijkstraTravelTime();
+            //querry.setStartTime(startTime);
 
-            double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
-            querry.setEstimatedTravelTime(estimation);
+            //double factor = graph.getFactor(startNodeId, endNodeId,startTime);
+            //double result = factor*dijkstratravelTime;
+            double result = graph.doEstimation(startNodeId,endNodeId,startTime);
+            querry.setEstimatedTravelTime(result);
 
-            TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
-            double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
+            if(enable){
+                TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
+                double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
+                querry.setTimeDependantTravelTime(timeDependantTime);
+            }
 
-            querry.setTimeDependantTravelTime(timeDependantTime);
         }
         graph.addQuerryList(startTime,queryList);
         System.out.println("Done with query of time "+startTime);

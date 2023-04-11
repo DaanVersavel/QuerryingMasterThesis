@@ -8,19 +8,21 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        String filePathGraph = args[0];
-        String filePathQuerries = args[1];
-        int numberOfThreads = Integer.parseInt(args[3]);
+//        String filePathGraph = args[0];
+//        String filePathQuerries = args[1];
+//        int numberOfThreads = Integer.parseInt(args[3]);
+        //boolean enable = args[4];
 
-//        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
-//        String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-Querrys.json";
-//        String outputFilePath = "test-64";
-//        int numberOfThreads =9;
+        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
+        String filePathQuerries = "C:/Users/daanv/Desktop/Aalst-Querrys.json";
+        String outputFilePath = "test-64";
+        int numberOfThreads = 9;
+        boolean enable = false;
 
-        List<Double> times = new ArrayList<>();
-                for(int i= 4; i<args.length; i++){
-            times.add(Double.parseDouble(args[i]));
-        }
+//        List<Double> times = new ArrayList<>();
+//                for(int i= 4; i<args.length; i++){
+//            times.add(Double.parseDouble(args[i]));
+//        }
 
         Input input = new Input();
         input.inputGraph(filePathGraph);
@@ -29,7 +31,7 @@ public class Main {
         List<Querry> querryList = input.getQuerryList();
 
 
-        String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
+        //String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
 
 
 //        for(int i = 0; i < querryList.size(); i++){
@@ -50,30 +52,40 @@ public class Main {
 //        }
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        //List<Double> times = getTimes();
+        List<Double> times = getTimes();
 
-        for(double startTime : times){
-            executor.execute(new QuerryTask(copyQuerrylist(querryList),startTime,graph));
+        for (double startTime : times) {
+            executor.execute(new QuerryTask(copyQuerrylist(querryList), graph, startTime,enable));
         }
+//        int step = querryList.size()/numberOfThreads;
+//        int beginindex=0;
+//        int endindex= beginindex+step;
+//        while(endindex< querryList.size()){
+//            executor.execute(new QuerryTask(copyQuerrylist(querryList),graph,beginindex,endindex));
+//            beginindex= endindex+1;
+//            endindex=beginindex+step;
+//        }
+//        executor.execute(new QuerryTask(copyQuerrylist(querryList),graph,beginindex, querryList.size()-1));
 
-        executor.shutdown();
 
-        while (!executor.isTerminated()) {
-            try {
-                executor.awaitTermination(10, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                // Handle interruption if necessary
+            executor.shutdown();
+
+            while (!executor.isTerminated()) {
+                try {
+                    executor.awaitTermination(10, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    // Handle interruption if necessary
+                }
             }
-        }
 
 
 //        Output output = new Output(querryList);
 //        output.writeToFile(outputFilePath);
 //        System.out.println("Done");
-        Output2 output2 = new Output2(graph.getQuerysListMap());
-        System.out.println("Start writing to file");
-        output2.writeToFile(outputFilePath);
-        System.out.println("Done");
+            Output2 output2 = new Output2(graph.getQuerysListMap());
+            System.out.println("Start writing to file");
+            output2.writeToFile(outputFilePath);
+            System.out.println("Done");
 
 //        double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
 //
@@ -91,12 +103,12 @@ public class Main {
 //        System.out.println("Factor is " + factor);
 //        System.out.println("Difference in estimation is " + difference+ " seconds");
 
-    }
+        }
 
     private static List<Querry> copyQuerrylist(List<Querry> querryList) {
         List<Querry> newList = new ArrayList<>();
         for(Querry querry : querryList){
-            newList.add(new Querry(querry.getStartId(), querry.getEndId()));
+            newList.add(new Querry(querry.getStartId(), querry.getEndId(),querry.getDijkstraTravelTime()));
         }
         return newList;
     }
