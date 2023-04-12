@@ -13,11 +13,11 @@ public class Main {
         int numberOfThreads = Integer.parseInt(args[3]);
         boolean enable = Boolean.parseBoolean(args[4]) ;
 
-        //String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
-        //String filePathQuerries = "C:/Users/daanv/Desktop/Aalst-Querrys.json";
-        //String outputFilePath = "test-64";
-        //int numberOfThreads = 9;
-        //boolean enable = false;
+//        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
+//        String filePathQuerries = "C:/Users/daanv/Desktop/Aalst-Querrys.json";
+//        String outputFilePath = "test-64";
+//        int numberOfThreads = 9;
+//        boolean enable = true;
 
         List<Double> times = new ArrayList<>();
                 for(int i= 4; i<args.length; i++){

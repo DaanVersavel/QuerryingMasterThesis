@@ -36,7 +36,6 @@ public class QuerryTask implements Runnable {
                 double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
                 querry.setTimeDependantTravelTime(timeDependantTime);
             }
-
         }
         graph.addQuerryList(startTime,queryList);
         System.out.println("Done with query of time "+startTime);
