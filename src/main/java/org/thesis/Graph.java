@@ -99,17 +99,18 @@ public class Graph {
             long numberofSplits=(passingCellsSet.size()-1L);
             for(int i=0;i<numberofSplits;i++){
                 double partPathTime=0;
-                long beginCell=list.get(i);
+                //long beginCell=list.get(i);
                 long endCell=list.get(i+1);
-                //find node to start path from
+
+//                //find node to start path from
+//                long currentCell=path.get(0).getCellID();
+//                while(currentCell!=beginCell){
+//                    indexBegin++;
+//                    currentCell=path.get(indexBegin).getCellID();
+//                }
                 int indexBegin=0;
-                long currentCell=path.get(0).getCellID();
-                while(currentCell!=beginCell){
-                    indexBegin++;
-                    currentCell=path.get(indexBegin).getCellID();
-                }
-                int indexEnd=indexBegin;
-                currentCell=path.get(0).getCellID();
+                int indexEnd=0;
+                long currentCell=path.get(1).getCellID();
                 while(currentCell!=endCell){
                     indexEnd++;
                     currentCell=path.get(indexEnd).getCellID();
@@ -124,6 +125,14 @@ public class Graph {
 
                 partPathTime= factor*partTravelTime;
                 returnTime+=partPathTime;
+
+                NodeParser endNodePart = path.get(indexEnd);
+                Iterator<NodeParser> it = path.iterator();
+                while(it.next().getOsmId()!=endNodePart.getOsmId()){
+                    it.remove();
+                }
+
+
             }
 
         }else {
