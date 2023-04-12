@@ -11,16 +11,17 @@ public class Main {
         String filePathGraph = args[0];
         String filePathQuerries = args[1];
         int numberOfThreads = Integer.parseInt(args[3]);
-        boolean enable = Boolean.parseBoolean(args[4]) ;
+        boolean enable = Boolean.parseBoolean(args[4]);
 
-//        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
-//        String filePathQuerries = "C:/Users/daanv/Desktop/Aalst-Querrys.json";
-//        String outputFilePath = "test-64";
+
+//        String filePathGraph = "D:/School/2022-2023/Masterproef/Testen/Aalst-preprocessing-9C.json";
+//        String filePathQuerries = "D:/School/2022-2023/Masterproef/Testen/Aalst-Querrys.json";
+//        String outputFilePath = "AalstC-9";
 //        int numberOfThreads = 9;
 //        boolean enable = true;
 
         List<Double> times = new ArrayList<>();
-                for(int i= 4; i<args.length; i++){
+                for(int i= 5; i<args.length; i++){
             times.add(Double.parseDouble(args[i]));
         }
 
@@ -66,8 +67,6 @@ public class Main {
 //            endindex=beginindex+step;
 //        }
 //        executor.execute(new QuerryTask(copyQuerrylist(querryList),graph,beginindex, querryList.size()-1));
-
-
             executor.shutdown();
 
             while (!executor.isTerminated()) {
@@ -78,31 +77,10 @@ public class Main {
                 }
             }
 
-
-//        Output output = new Output(querryList);
-//        output.writeToFile(outputFilePath);
-//        System.out.println("Done");
             Output2 output2 = new Output2(graph.getQuerysListMap());
             System.out.println("Start writing to file");
             output2.writeToFile(outputFilePath);
             System.out.println("Done");
-
-//        double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
-//
-//        TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
-//        double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
-//
-//        double factor = graph.getFactor(startNodeId, endNodeId, startTime);
-//        double difference = timeDependantTime - estimation;
-
-
-//
-//        System.out.println(startNodeId + " ==> " + endNodeId + " at time " + startTime);
-//        System.out.println("Estimation is " + estimation + " seconds");
-//        System.out.println("TimeDependant calculation is " + timeDependantTime+ " seconds");
-//        System.out.println("Factor is " + factor);
-//        System.out.println("Difference in estimation is " + difference+ " seconds");
-
         }
 
     private static List<Querry> copyQuerrylist(List<Querry> querryList) {

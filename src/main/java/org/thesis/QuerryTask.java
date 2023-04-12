@@ -23,8 +23,7 @@ public class QuerryTask implements Runnable {
             Querry querry = queryList.get(i);
             long startNodeId = querry.getStartId();
             long endNodeId = querry.getEndId();
-            //double dijkstratravelTime = querry.getDijkstraTravelTime();
-            //querry.setStartTime(startTime);
+            querry.setStartTime(startTime);
 
             //double factor = graph.getFactor(startNodeId, endNodeId,startTime);
             //double result = factor*dijkstratravelTime;
@@ -39,6 +38,5 @@ public class QuerryTask implements Runnable {
         }
         graph.addQuerryList(startTime,queryList);
         System.out.println("Done with query of time "+startTime);
-
     }
 }

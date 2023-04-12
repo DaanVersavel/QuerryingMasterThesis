@@ -12,8 +12,8 @@ public class Dijkstra {
        this.graph=graph;
     }
 
-    //return map of shortest time to land marks
-    public double solveDijkstra(long startNode, long endNodeId){
+    //return map of shortest time to landmarks
+    public double solveDijkstra(long startId, long endId){
         PriorityQueue<NodeParser> pq = new PriorityQueue<>(new NodeComparator());
         Map<Long,Double> shortestTimeMap = new HashMap<>();
         Map<Long,NodeParser> nodeMap = new HashMap<>();
@@ -25,24 +25,20 @@ public class Dijkstra {
         }
         pq.addAll(nodeMap.values());
 
-
-        shortestTimeMap.put(startNode,0.0);
-        NodeParser tempNode = nodeMap.get(startNode);
+        shortestTimeMap.put(startId,0.0);
+        NodeParser tempNode = nodeMap.get(startId);
         tempNode.setCurrenCost(0.0);
-        pq.remove(nodeMap.get(startNode));
+        pq.remove(nodeMap.get(startId));
         pq.add(tempNode);
 
-
         //dijkstra algorithm
-        for (int i = 1; i <= nodeMap.size(); i++) {
+        for(int i = 1; i <= nodeMap.size(); i++) {
             //shortest time search
             NodeParser removedNode= pq.remove();
-
             if(shortestTimeMap.get(removedNode.getOsmId())==Double.MAX_VALUE){
                 System.out.println("Node met current cost max Dijkstra");
                 break;
             }
-
             //update the adjacent node-time
             for(EdgeParser edge: removedNode.getOutgoingEdges()){
                 //when reaching the node
@@ -57,12 +53,9 @@ public class Dijkstra {
                     }
                 }
             }
-            if(removedNode.getOsmId()==endNodeId)break;
+            if(removedNode.getOsmId()==endId)break;
         }
-
-
-
-        return shortestTimeMap.get(endNodeId);
+        return shortestTimeMap.get(endId);
     }
 
 
