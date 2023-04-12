@@ -8,7 +8,8 @@ public class Dijkstra {
     private Map<Long,Long> parentMap;
     private Map<Long,Double> shortestTimeMap;
     private List<NodeParser> path;
-    private Set<Long> passingCellSet;
+    private List<Long> passingCell = new ArrayList<>();
+
 
     public Dijkstra(Graph graph) {
        this.graph=graph;
@@ -20,8 +21,6 @@ public class Dijkstra {
         Map<Long,NodeParser> nodeMap = new HashMap<>();
         parentMap = new HashMap<>();
         shortestTimeMap = new HashMap<>();
-
-
 
         for(NodeParser node : graph.getNodesMap().values()){
             shortestTimeMap.put(node.getOsmId(),Double.MAX_VALUE);
@@ -71,24 +70,31 @@ public class Dijkstra {
     }
     public void calculatePath(long begin, long end){
         path=new ArrayList<>();
-        passingCellSet = new HashSet<>();
-
         while(end!=begin){
             path.add(graph.getNodesMap().get(end));
-            passingCellSet.add(graph.getNodesMap().get(end).getCellID());
+            long currentCellId = graph.getNodesMap().get(end).getCellID();
+            if(!passingCell.isEmpty()){
+                if(passingCell.get(passingCell.size()-1)!=currentCellId){
+                    passingCell.add(currentCellId);
+                }
+            }else passingCell.add(currentCellId);
+
             end = parentMap.get(end);
         }
         path.add(graph.getNodesMap().get(begin));
-        passingCellSet.add(graph.getNodesMap().get(begin).getCellID());
-        Collections.reverse(path);
+        if(passingCell.get(passingCell.size()-1)!=graph.getNodesMap().get(begin).getCellID()){
+            passingCell.add(graph.getNodesMap().get(begin).getCellID());
+        }
 
+        Collections.reverse(path);
+        Collections.reverse(passingCell);
+    }
+
+    public List<Long> getPassingCell() {
+        return passingCell;
     }
     public List<NodeParser> getPath() {
         return path;
-    }
-
-    public Set<Long> getPassingCellSet() {
-        return passingCellSet;
     }
 
     public Map<Long, Double> getShortestTimeMap() {

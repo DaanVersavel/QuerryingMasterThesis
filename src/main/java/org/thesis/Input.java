@@ -93,7 +93,7 @@ public class Input {
 
             for (Object obj : jsonArray) {
                 JSONObject querryJson = (JSONObject) obj;
-                Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"));
+                Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"),(double) querryJson.get("dijkstraTravelTime"));
                 querryList.add(querry);
             }
 

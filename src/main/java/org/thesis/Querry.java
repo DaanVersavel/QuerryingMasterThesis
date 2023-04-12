@@ -4,12 +4,14 @@ public class Querry {
     private final long startId;
     private final long endId;
     private double startTime;
+    private double dijkstreTravelTime;
     private double estimatedTravelTime;
     private double timeDependantTravelTime;
 
-    public Querry(long startId, long endId) {
+    public Querry(long startId, long endId, double dijkstreTravelTime) {
         this.startId = startId;
         this.endId = endId;
+        this.dijkstreTravelTime = dijkstreTravelTime;
     }
 
     public void setEstimatedTravelTime(double estimatedTravelTime) {
@@ -42,5 +44,9 @@ public class Querry {
 
     public double getTimeDependantTravelTime() {
         return timeDependantTravelTime;
+    }
+
+    public double getDijkstreTravelTime() {
+        return dijkstreTravelTime;
     }
 }

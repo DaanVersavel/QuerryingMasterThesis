@@ -12,7 +12,7 @@ public class Main {
 //        String filePathQuerries = args[1];
 //        int numberOfThreads = Integer.parseInt(args[3]);
 
-        String filePathGraph = "D:/School/2022-2023/Masterproef/j/JarThesis/preprocessing/random/9-cell/Aalst-preprocessing-9.json";
+        String filePathGraph = "C:/Users/daanv/Desktop/Aalst-Querrys.json";
         String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-Querrys.json";
         String outputFilePath = "test-64";
         int numberOfThreads =9;
@@ -97,7 +97,7 @@ public class Main {
     private static List<Querry> copyQuerrylist(List<Querry> querryList) {
         List<Querry> newList = new ArrayList<>();
         for(Querry querry : querryList){
-            newList.add(new Querry(querry.getStartId(), querry.getEndId()));
+            newList.add(new Querry(querry.getStartId(), querry.getEndId(),querry.getDijkstreTravelTime()));
         }
         return newList;
     }

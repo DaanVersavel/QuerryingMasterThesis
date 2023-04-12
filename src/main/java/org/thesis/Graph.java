@@ -6,9 +6,9 @@ public class Graph {
 
     private Map<Long, NodeParser> nodesMap;
     private Map<Long,Cell> cellMap;
-    private Map<String, Double[][]> speedMatrixMap;
-    private Map<Double, List<Querry>> querysListMap;
-
+    private final Map<String, Double[][]> speedMatrixMap;
+    private final Map<Double, List<Querry>> querysListMap;
+    private List<NodeParser> latestPath;
 
     public Graph() {
         this.nodesMap= new HashMap<>();
@@ -90,58 +90,68 @@ public class Graph {
         Dijkstra dijkstra = new Dijkstra(this);
         double traveltime = dijkstra.solveDijkstra(startNodeId, endNodeId);
         dijkstra.calculatePath(startNodeId,endNodeId);
-        List<NodeParser> path =dijkstra.getPath();
-        Set<Long> passingCellsSet = dijkstra.getPassingCellSet();
+        this.latestPath = dijkstra.getPath();
+
+        List<Long> passingCells = dijkstra.getPassingCell();
 
         double returnTime=0;
-        if(passingCellsSet.size()>3){
-            List<Long> list = new ArrayList<>(passingCellsSet);
-            long numberofSplits=(passingCellsSet.size()-1L);
+        long partEndNodeId=0;
+        long partBeginNodeId=0;
+        if(passingCells.size()>=3){
+            List<Long> list = new ArrayList<>(passingCells);
+            long numberofSplits=(passingCells.size()-1L);
             for(int i=0;i<numberofSplits;i++){
                 double partPathTime=0;
-                //long beginCell=list.get(i);
                 long endCell=list.get(i+1);
-
-//                //find node to start path from
-//                long currentCell=path.get(0).getCellID();
-//                while(currentCell!=beginCell){
-//                    indexBegin++;
-//                    currentCell=path.get(indexBegin).getCellID();
-//                }
+                boolean theEnd= false;
+                //find node to start path from
+                if((i+1)==numberofSplits){
+                    theEnd = true;
+                }
                 int indexBegin=0;
-                int indexEnd=0;
-                long currentCell=path.get(1).getCellID();
-                while(currentCell!=endCell){
-                    indexEnd++;
-                    currentCell=path.get(indexEnd).getCellID();
+                int indexEnd=1;
+                if(!theEnd){
+                    long currentCell=latestPath.get(indexBegin).getCellID();
+                    while(currentCell!=endCell){
+                        indexEnd++;
+                        currentCell=latestPath.get(indexEnd).getCellID();
+                    }
+                }else {
+                    indexEnd= latestPath.size()-1;
                 }
 
-                long partBeginNodeId=path.get(indexBegin).getOsmId();
-                long partEndNodeId=path.get(indexEnd).getOsmId();
+                partBeginNodeId=latestPath.get(indexBegin).getOsmId();
+                partEndNodeId=latestPath.get(indexEnd).getOsmId();
                 double partTravelTime=dijkstra.getShortestTimeMap().get(partEndNodeId)-dijkstra.getShortestTimeMap().get(partBeginNodeId);
-
-
                 double factor=getFactor(partBeginNodeId, partEndNodeId,startTime);
 
-                partPathTime= factor*partTravelTime;
-                returnTime+=partPathTime;
 
-                NodeParser endNodePart = path.get(indexEnd);
-                Iterator<NodeParser> it = path.iterator();
-                while(it.next().getOsmId()!=endNodePart.getOsmId()){
-                    it.remove();
+                partPathTime= factor*partTravelTime;
+                assert partPathTime!=0.0 : "part of path time is 0.0";
+                returnTime+=partPathTime;
+//                System.out.println("--------------------------------");
+//                System.out.println(partBeginNodeId+"==>"+partEndNodeId);
+//                System.out.println("Factor:"+factor);
+//                System.out.println("Dijkstra travelTime: "+partTravelTime);
+//                System.out.println("Estimation: "+partPathTime);
+//                System.out.println("--------------------------------");
+
+                if(!theEnd){
+                    NodeParser endNodePart = latestPath.get(indexEnd);
+                    Iterator<NodeParser> it = latestPath.iterator();
+                    while(it.next().getOsmId()!=endNodePart.getOsmId()){
+                        it.remove();
+                    }
                 }
 
-
             }
-
         }else {
             double factor = getFactor(startNodeId, endNodeId,startTime);
             returnTime = factor*traveltime;
         }
-
         return returnTime;
     }
+
     public double doNormalEstimation(long startNodeId, long endNodeId, double startTime) {
         //calculate traveltime using normal Dijstra
         Dijkstra dijkstra = new Dijkstra(this);
@@ -165,6 +175,9 @@ public class Graph {
 
         //factormap Time==> TargetCell
         return beginCell.getFactorMap().get(startTime).get(endNode.getCellID());
+    }
+    private List<NodeParser> copyLatestPath(List<NodeParser> path) {
+        return path.stream().map(NodeParser::new).toList();
     }
 
     public void addQuerryList(double startTime, List<Querry> querryList) {
