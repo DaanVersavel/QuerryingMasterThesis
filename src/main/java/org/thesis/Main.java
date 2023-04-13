@@ -31,7 +31,7 @@ public class Main {
         Graph graph = input.getGraph();
         List<Querry> querryList = input.getQuerryList();
 
-        String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
+        String outputFilePath = args[2]+"-"+ graph.getCellMap().size()+"-"+"ES";
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
         for(double startTime : times){
