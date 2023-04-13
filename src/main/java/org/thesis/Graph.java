@@ -2,13 +2,15 @@ package org.thesis;
 
 import java.util.*;
 
+import static org.thesis.Main.getTimes;
+
 public class Graph {
 
     private Map<Long, NodeParser> nodesMap;
     private Map<Long,Cell> cellMap;
     private final Map<String, Double[][]> speedMatrixMap;
     private final Map<Double, List<Querry>> querysListMap;
-    private List<NodeParser> latestPath;
+    private final List<Double> times;
 
     public Graph() {
         this.nodesMap= new HashMap<>();
@@ -16,6 +18,7 @@ public class Graph {
         this.querysListMap = new HashMap<>();
         //only used for the comparing between real value and estimation
         this.speedMatrixMap = new HashMap<>();
+        this.times = getTimes();
         makeSpeedMatrixs();
     }
 
@@ -90,8 +93,7 @@ public class Graph {
         Dijkstra dijkstra = new Dijkstra(this);
         double traveltime = dijkstra.solveDijkstra(startNodeId, endNodeId);
         dijkstra.calculatePath(startNodeId,endNodeId);
-        this.latestPath = dijkstra.getPath();
-
+        List<NodeParser> latestPath = copyLatestPath(dijkstra.getPath());
         List<Long> passingCells = dijkstra.getPassingCell();
 
         double returnTime=0;
@@ -111,7 +113,7 @@ public class Graph {
                 int indexBegin=0;
                 int indexEnd=1;
                 if(!theEnd){
-                    long currentCell=latestPath.get(indexBegin).getCellID();
+                    long currentCell=latestPath.get(indexEnd).getCellID();
                     while(currentCell!=endCell){
                         indexEnd++;
                         currentCell=latestPath.get(indexEnd).getCellID();
@@ -119,13 +121,11 @@ public class Graph {
                 }else {
                     indexEnd= latestPath.size()-1;
                 }
-
                 partBeginNodeId=latestPath.get(indexBegin).getOsmId();
                 partEndNodeId=latestPath.get(indexEnd).getOsmId();
                 double partTravelTime=dijkstra.getShortestTimeMap().get(partEndNodeId)-dijkstra.getShortestTimeMap().get(partBeginNodeId);
-                double factor=getFactor(partBeginNodeId, partEndNodeId,startTime);
-
-
+                double currentTime= calculateCurrentTime(startTime,dijkstra.getShortestTimeMap().get(partBeginNodeId));
+                double factor=getFactor(partBeginNodeId, partEndNodeId,currentTime);
                 partPathTime= factor*partTravelTime;
                 assert partPathTime!=0.0 : "part of path time is 0.0";
                 returnTime+=partPathTime;
@@ -135,7 +135,6 @@ public class Graph {
 //                System.out.println("Dijkstra travelTime: "+partTravelTime);
 //                System.out.println("Estimation: "+partPathTime);
 //                System.out.println("--------------------------------");
-
                 if(!theEnd){
                     NodeParser endNodePart = latestPath.get(indexEnd);
                     Iterator<NodeParser> it = latestPath.iterator();
@@ -143,13 +142,22 @@ public class Graph {
                         it.remove();
                     }
                 }
-
             }
         }else {
             double factor = getFactor(startNodeId, endNodeId,startTime);
             returnTime = factor*traveltime;
         }
         return returnTime;
+    }
+
+    private double calculateCurrentTime(double startTime, Double offset) {
+        double time=startTime+offset;
+        int hour = (int) (time/3600);
+        double roundedTime= hour*3600.0;
+        for (Double timeOfTimes : times) {
+            if (roundedTime == timeOfTimes) return timeOfTimes;
+        }
+        return startTime;
     }
 
     public double doNormalEstimation(long startNodeId, long endNodeId, double startTime) {
@@ -177,7 +185,11 @@ public class Graph {
         return beginCell.getFactorMap().get(startTime).get(endNode.getCellID());
     }
     private List<NodeParser> copyLatestPath(List<NodeParser> path) {
-        return path.stream().map(NodeParser::new).toList();
+        List<NodeParser> result = new ArrayList<>();
+        for(NodeParser node : path) {
+            result.add(new NodeParser(node));
+        }
+        return result;
     }
 
     public void addQuerryList(double startTime, List<Querry> querryList) {

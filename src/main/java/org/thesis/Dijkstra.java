@@ -30,19 +30,16 @@ public class Dijkstra {
         }
         pq.addAll(nodeMap.values());
 
-
         shortestTimeMap.put(startNode,0.0);
         NodeParser tempNode = nodeMap.get(startNode);
         tempNode.setCurrenCost(0.0);
         pq.remove(nodeMap.get(startNode));
         pq.add(tempNode);
 
-
         //dijkstra algorithm
         for (int i = 1; i <= nodeMap.size(); i++) {
             //shortest time search
             NodeParser removedNode= pq.remove();
-
             if(shortestTimeMap.get(removedNode.getOsmId())==Double.MAX_VALUE){
                 System.out.println("Node met current cost max Dijkstra");
                 break;
@@ -65,9 +62,9 @@ public class Dijkstra {
             }
             if(removedNode.getOsmId()==endNodeId)break;
         }
-
         return shortestTimeMap.get(endNodeId);
     }
+
     public void calculatePath(long begin, long end){
         path=new ArrayList<>();
         while(end!=begin){
@@ -78,7 +75,6 @@ public class Dijkstra {
                     passingCell.add(currentCellId);
                 }
             }else passingCell.add(currentCellId);
-
             end = parentMap.get(end);
         }
         path.add(graph.getNodesMap().get(begin));

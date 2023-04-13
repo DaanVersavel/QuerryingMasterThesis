@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 public class Input {
-    private final Graph graph = new Graph();
+    private Graph graph = new Graph();
 
     private List<Querry> querryList = new ArrayList<>();
 

@@ -8,19 +8,21 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-//        String filePathGraph = args[0];
-//        String filePathQuerries = args[1];
-//        int numberOfThreads = Integer.parseInt(args[3]);
+        String filePathGraph = args[0];
+        String filePathQuerries = args[1];
+        int numberOfThreads = Integer.parseInt(args[3]);
+        boolean enable = Boolean.parseBoolean(args[4]);
 
-        String filePathGraph = "C:/Users/daanv/Desktop/Aalst-Querrys.json";
-        String filePathQuerries = "D:/School/2022-2023/Masterproef/j/JarThesis/querrys/Aalst-Querrys.json";
-        String outputFilePath = "test-64";
-        int numberOfThreads =9;
+//        String filePathGraph = "D:/School/2022-2023/Masterproef/Testen/Aalst-preprocessing-9C.json";
+//        String filePathQuerries = "D:/School/2022-2023/Masterproef/Testen/Aalst-Querrys.json";
+//        String outputFilePath = "test-64";
+//        int numberOfThreads =9;
+//        boolean enable=false;
 
-//        List<Double> times = new ArrayList<>();
-//                for(int i= 4; i<args.length; i++){
-//            times.add(Double.parseDouble(args[i]));
-//        }
+        List<Double> times = new ArrayList<>();
+                for(int i= 5; i<args.length; i++){
+            times.add(Double.parseDouble(args[i]));
+        }
 
 
         Input input = new Input();
@@ -29,34 +31,12 @@ public class Main {
         Graph graph = input.getGraph();
         List<Querry> querryList = input.getQuerryList();
 
-
-        //String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
-
-
-//        for(int i = 0; i < querryList.size(); i++){
-//            if(i%100 ==0) System.out.println(i);
-//            Querry querry = querryList.get(i);
-//            long startNodeId = querry.getStartId();
-//            long endNodeId = querry.getEndId();
-//            double startTime = querry.getStartTime();
-//
-//            double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
-//            querry.setEstimatedTravelTime(estimation);
-//
-//            TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
-//            double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
-//
-//            querry.setTimeDependantTravelTime(timeDependantTime);
-//
-//        }
+        String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-        List<Double> times = getTimes();
-
         for(double startTime : times){
-            executor.execute(new QuerryTask(copyQuerrylist(querryList),startTime,graph));
+            executor.execute(new QuerryTask(copyQuerrylist(querryList),startTime,graph,enable));
         }
-
         executor.shutdown();
 
         while (!executor.isTerminated()) {
@@ -67,32 +47,29 @@ public class Main {
             }
         }
 
-
-//        Output output = new Output(querryList);
-//        output.writeToFile(outputFilePath);
-//        System.out.println("Done");
         Output2 output2 = new Output2(graph.getQuerysListMap());
         System.out.println("Start writing to file");
         output2.writeToFile(outputFilePath);
         System.out.println("Done");
-
-//        double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
-//
-//        TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
-//        double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
-//
-//        double factor = graph.getFactor(startNodeId, endNodeId, startTime);
-//        double difference = timeDependantTime - estimation;
-
-
-//
-//        System.out.println(startNodeId + " ==> " + endNodeId + " at time " + startTime);
-//        System.out.println("Estimation is " + estimation + " seconds");
-//        System.out.println("TimeDependant calculation is " + timeDependantTime+ " seconds");
-//        System.out.println("Factor is " + factor);
-//        System.out.println("Difference in estimation is " + difference+ " seconds");
-
     }
+//    private static void method(List<Querry> querryList, double startTime, Graph graph, boolean enable){
+//        for(int i = 0; i < querryList.size(); i++){
+//            //if(i%200 ==0) System.out.println(i);
+//            Querry querry = querryList.get(i);
+//            long startNodeId = querry.getStartId();
+//            long endNodeId = querry.getEndId();
+//            querry.setStartTime(startTime);
+//
+//            double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
+//            querry.setEstimatedTravelTime(estimation);
+//
+//            if(enable){
+//                TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
+//                double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
+//                querry.setTimeDependantTravelTime(timeDependantTime);
+//            }
+//        }
+//    }
 
     private static List<Querry> copyQuerrylist(List<Querry> querryList) {
         List<Querry> newList = new ArrayList<>();
@@ -102,7 +79,7 @@ public class Main {
         return newList;
     }
 
-    private static List<Double> getTimes() {
+    public static List<Double> getTimes() {
         List<Double> times = new ArrayList<>();
         times.add(0.0);
         times.add(4*3600.0);
