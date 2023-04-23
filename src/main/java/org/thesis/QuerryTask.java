@@ -25,9 +25,9 @@ public class QuerryTask implements Runnable {
             long endNodeId = querry.getEndId();
             querry.setStartTime(startTime);
 
-            //double factor = graph.getFactor(startNodeId, endNodeId,startTime);
-            //double result = factor*dijkstratravelTime;
-            double result = graph.doEstimation(startNodeId,endNodeId,startTime);
+            double factor = graph.getFactor(startNodeId, endNodeId,startTime);
+            double result = factor* querry.getDijkstraTravelTime();
+            //double result = graph.doEstimation(startNodeId,endNodeId,startTime);
             querry.setEstimatedTravelTime(result);
 
             if(enable){
