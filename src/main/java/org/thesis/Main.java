@@ -14,8 +14,8 @@ public class Main {
         boolean enable = Boolean.parseBoolean(args[4]);
 
 
-//        String filePathGraph = "D:/School/2022-2023/Masterproef/Testen/Aalst-preprocessing-9C.json";
-//        String filePathQuerries = "D:/School/2022-2023/Masterproef/Testen/Aalst-Querrys.json";
+//        String filePathGraph = "D:/Onedrives/OneDrive - KU Leuven/2022-2023/Masterproof/Testen/preprocessing/random/16-cell/Aalst-preprocessing-16R.json";
+//        String filePathQuerries = "D:/Onedrives/OneDrive - KU Leuven/2022-2023/Masterproof/Testen/querrys/Aalst-Querrys.json";
 //        String outputFilePath = "AalstC-9";
 //        int numberOfThreads = 9;
 //        boolean enable = true;
@@ -56,8 +56,9 @@ public class Main {
         //List<Double> times = getTimes();
 
         for (double startTime : times) {
-            executor.execute(new QuerryTask(copyQuerrylist(querryList), graph, startTime,enable));
+            executor.execute(new QuerryTask(copyQuerrylist(querryList), graph, startTime, enable));
         }
+//
 //        int step = querryList.size()/numberOfThreads;
 //        int beginindex=0;
 //        int endindex= beginindex+step;
@@ -67,21 +68,21 @@ public class Main {
 //            endindex=beginindex+step;
 //        }
 //        executor.execute(new QuerryTask(copyQuerrylist(querryList),graph,beginindex, querryList.size()-1));
-            executor.shutdown();
+        executor.shutdown();
 
-            while (!executor.isTerminated()) {
-                try {
-                    executor.awaitTermination(10, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    // Handle interruption if necessary
-                }
+        while (!executor.isTerminated()) {
+            try {
+                executor.awaitTermination(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                // Handle interruption if necessary
             }
-
-            Output2 output2 = new Output2(graph.getQuerysListMap());
-            System.out.println("Start writing to file");
-            output2.writeToFile(outputFilePath);
-            System.out.println("Done");
         }
+
+        Output2 output2 = new Output2(graph.getQuerysListMap());
+        System.out.println("Start writing to file");
+        output2.writeToFile(outputFilePath);
+        System.out.println("Done");
+    }
 
     private static List<Querry> copyQuerrylist(List<Querry> querryList) {
         List<Querry> newList = new ArrayList<>();
