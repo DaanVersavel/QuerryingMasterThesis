@@ -33,24 +33,9 @@ public class Main {
 
 
         String outputFilePath = args[2]+"-"+ graph.getCellMap().size();
+        if(!enable) outputFilePath = outputFilePath+"-NC";
 
 
-//        for(int i = 0; i < querryList.size(); i++){
-//            if(i%100 ==0) System.out.println(i);
-//            Querry querry = querryList.get(i);
-//            long startNodeId = querry.getStartId();
-//            long endNodeId = querry.getEndId();
-//            double startTime = querry.getStartTime();
-//
-//            double estimation = graph.doEstimation(startNodeId, endNodeId, startTime);
-//            querry.setEstimatedTravelTime(estimation);
-//
-//            TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
-//            double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
-//
-//            querry.setTimeDependantTravelTime(timeDependantTime);
-//
-//        }
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
         //List<Double> times = getTimes();
@@ -58,16 +43,6 @@ public class Main {
         for (double startTime : times) {
             executor.execute(new QuerryTask(copyQuerrylist(querryList), graph, startTime, enable));
         }
-//
-//        int step = querryList.size()/numberOfThreads;
-//        int beginindex=0;
-//        int endindex= beginindex+step;
-//        while(endindex< querryList.size()){
-//            executor.execute(new QuerryTask(copyQuerrylist(querryList),graph,beginindex,endindex));
-//            beginindex= endindex+1;
-//            endindex=beginindex+step;
-//        }
-//        executor.execute(new QuerryTask(copyQuerrylist(querryList),graph,beginindex, querryList.size()-1));
         executor.shutdown();
 
         while (!executor.isTerminated()) {
@@ -78,9 +53,9 @@ public class Main {
             }
         }
 
-        Output2 output2 = new Output2(graph.getQuerysListMap());
+        Output output = new Output(graph.getQuerysListMap());
         System.out.println("Start writing to file");
-        output2.writeToFile(outputFilePath);
+        output.writeToFile(outputFilePath);
         System.out.println("Done");
     }
 

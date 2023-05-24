@@ -53,7 +53,6 @@ public class Input {
                 }
                 cell.addNodeList(nodeList);
                 this.graph.addListToNodeMap(nodeList);
-//                long landmarkid = (long) celljson.get("LandmarkID");
                 JSONObject node = (JSONObject) celljson.get("landmark");
                 long landmarkid = (long) node.get("osmId");
 
@@ -96,8 +95,6 @@ public class Input {
                 Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"),(double)querryJson.get("dijkstraTravelTime"));
                 querryList.add(querry);
             }
-
-
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }

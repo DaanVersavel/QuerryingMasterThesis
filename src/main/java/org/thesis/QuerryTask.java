@@ -27,15 +27,13 @@ public class QuerryTask implements Runnable {
 
             double factor = graph.getFactor(startNodeId, endNodeId,startTime);
             double result = factor* querry.getDijkstraTravelTime();
-            //double result = graph.doEstimation(startNodeId,endNodeId,startTime);
             querry.setEstimatedTravelTime(result);
 
-            //if(enable){
+            if(enable){
                 TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
                 double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);
                 querry.setTimeDependantTravelTime(timeDependantTime);
-            //}
-            System.out.print("");
+            }
         }
         graph.addQuerryList(startTime,queryList);
         System.out.println("Done with query of time "+startTime);

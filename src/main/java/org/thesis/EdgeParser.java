@@ -26,6 +26,7 @@ public class EdgeParser {
 
 	//nodeArrivelTime= time when we reach Begin node of edge
 	//return the passed time from when reaching the end node of the edge
+	//Ichoua algorithm with small tweeks so we woont crooss the last time interval
 	public double getTravelTime(double nodeArrivalTime, Map<String, Double[][]> speedMatrixMap) {
 		Double[][] speedMatrix = speedMatrixMap.get(this.edgeType);
 
