@@ -29,6 +29,7 @@ public class QuerryTask implements Runnable {
             double result = factor* querry.getDijkstraTravelTime();
             querry.setEstimatedTravelTime(result);
 
+            //if false we won't do the calculation of the time-dependent travel time
             if(enable){
                 TimeDependentDijkstra timeDependentDijkstra = new TimeDependentDijkstra(graph);
                 double timeDependantTime = timeDependentDijkstra.solveDijkstraTimeDependant(startNodeId, endNodeId, startTime);

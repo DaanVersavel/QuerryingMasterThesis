@@ -40,6 +40,31 @@ public class Graph {
     public Map<String, Double[][]> getSpeedMatrixMap() {
         return speedMatrixMap;
     }
+    public void addListToNodeMap(List<NodeParser> nodeList) {
+        for (NodeParser node : nodeList) {
+            this.nodesMap.put(node.getOsmId(), node);
+        }
+    }
+
+    public void addToCellMap(Cell cell) {
+        this.cellMap.put(cell.getCellId(), cell);
+    }
+
+    public double getFactor(long startNodeId, long endNodeId,double startTime) {
+        NodeParser beginNode= this.nodesMap.get(startNodeId);
+        NodeParser endNode= this.nodesMap.get(endNodeId);
+        Cell beginCell = this.cellMap.get(beginNode.getCellID());
+        //factormap Time==> TargetCell
+        return beginCell.getFactorMap().get(startTime).get(endNode.getCellID());
+    }
+
+    public void addQuerryList(double startTime, List<Querry> querryList) {
+        querysListMap.put(startTime, querryList);
+    }
+
+    public Map<Double, List<Querry>> getQuerysListMap() {
+        return querysListMap;
+    }
 
     public void makeSpeedMatrixs() {
         //Primary
@@ -75,41 +100,5 @@ public class Graph {
         //motorway
         Double[][] speedMatrix8 = {{0.0, 25200.0, 33.3333}, {25200.0, 32400.0, 27.7777}, {32400.0, 43200.0, 30.5555},{43200.0,46800.0,27.7777}, {46800.0,55800.0,30.5555}, {55800.0,68400.0,25.0}, {68400.0,93600.0,33.3333}};
         this.speedMatrixMap.put("motorway", speedMatrix8);
-    }
-
-    public void addListToNodeMap(List<NodeParser> nodeList) {
-        for (NodeParser node : nodeList) {
-            this.nodesMap.put(node.getOsmId(), node);
-        }
-    }
-
-    public void addToCellMap(Cell cell) {
-        this.cellMap.put(cell.getCellId(), cell);
-    }
-
-    public double doEstimation(long startNodeId, long endNodeId, double startTime) {
-        //calculate traveltime using normal Dijstra
-        Dijkstra dijkstra = new Dijkstra(this);
-        double traveltime = dijkstra.solveDijkstra(startNodeId, endNodeId);
-        double factor = getFactor(startNodeId, endNodeId,startTime);
-
-        return factor * traveltime;
-    }
-
-    public double getFactor(long startNodeId, long endNodeId,double startTime) {
-        NodeParser beginNode= this.nodesMap.get(startNodeId);
-        NodeParser endNode= this.nodesMap.get(endNodeId);
-        Cell beginCell = this.cellMap.get(beginNode.getCellID());
-
-        //factormap Time==> TargetCell
-        return beginCell.getFactorMap().get(startTime).get(endNode.getCellID());
-    }
-
-    public void addQuerryList(double startTime, List<Querry> querryList) {
-        querysListMap.put(startTime, querryList);
-    }
-
-    public Map<Double, List<Querry>> getQuerysListMap() {
-        return querysListMap;
     }
 }

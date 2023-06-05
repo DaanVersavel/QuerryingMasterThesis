@@ -48,8 +48,6 @@ public class EdgeParser {
 			}
 			int row = incrementor;
 			speed = speedMatrix[row][2];
-
-
 			expectedArrivalTime = time + (distanceToGo/speed);
 
 			//if we cross the border of the speed matrix
