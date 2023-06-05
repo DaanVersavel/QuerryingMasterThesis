@@ -2,15 +2,16 @@ package org.thesis;
 
 public class Querry {
     private final long startId;
-    private long endId;
+    private final long endId;
     private double startTime;
     private double estimatedTravelTime;
     private double timeDependantTravelTime;
+    private final double dijkstraTravelTime;
 
-    public Querry(long startId, long endId, double startTime) {
+    public Querry(long startId, long endId,double dijkstraTravelTime) {
         this.startId = startId;
         this.endId = endId;
-        this.startTime = startTime;
+        this.dijkstraTravelTime = dijkstraTravelTime;
     }
 
     public void setEstimatedTravelTime(double estimatedTravelTime) {
@@ -37,7 +38,14 @@ public class Querry {
         return estimatedTravelTime;
     }
 
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
+    }
+
     public double getTimeDependantTravelTime() {
         return timeDependantTravelTime;
+    }
+    public double getDijkstraTravelTime() {
+        return dijkstraTravelTime;
     }
 }

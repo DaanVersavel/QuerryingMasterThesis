@@ -6,7 +6,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,12 +53,14 @@ public class Input {
                 }
                 cell.addNodeList(nodeList);
                 this.graph.addListToNodeMap(nodeList);
-                long landmarkid = (long) celljson.get("LandmarkId");
+                JSONObject node = (JSONObject) celljson.get("landmark");
+                long landmarkid = (long) node.get("osmId");
+
 
                 cell.setLandmark(cell.getCellNodesMap().get(landmarkid));
 
                 //add factormap
-                Map factormapJson = (Map) celljson.get("FactorMap");
+                Map factormapJson = (Map) celljson.get("factorMap");
                 for (Object objkey : factormapJson.keySet()) {
                     JSONObject factorMapobj = (JSONObject) factormapJson.get(objkey);
                     Map<Long, Double> factorEntry = new HashMap<>();
@@ -91,11 +92,9 @@ public class Input {
 
             for (Object obj : jsonArray) {
                 JSONObject querryJson = (JSONObject) obj;
-                Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"),(double)querryJson.get("startTime"));
+                Querry querry  = new Querry((long)querryJson.get("startId"),(long)querryJson.get("endId"),(double)querryJson.get("dijkstraTravelTime"));
                 querryList.add(querry);
             }
-
-
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
